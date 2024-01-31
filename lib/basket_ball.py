@@ -182,3 +182,93 @@ def game_dict():
             ]
         }
     }
+
+# print(game_dict().values()) #D1.1
+
+#D1.2: num_points_per_game()
+def num_points_per_game(player_name): 
+    for team_data in game_dict().values():
+        for player_data in team_data["players"]:
+            if player_data["name"] == player_name:
+                return player_data["points_per_game"]
+    return None 
+print(num_points_per_game("Kristaps Porzingis")) 
+
+
+#D2
+def player_age(player_name): 
+    for team_data in game_dict().values():
+        for player_data in team_data["players"]:
+            if player_data["name"] == player_name:
+                return player_data["age"]
+    return None
+print(player_age("Rui Hachimura"))
+
+
+#D3: team_colors()
+def team_colors(name):
+    for team_data in game_dict().values():
+        if team_data["team_name"] == name:
+            return team_data["colors"]
+    return None
+print(team_colors("Cleveland Cavaliers"))
+
+
+#D4: team_names()
+def team_names():
+    return [team_data["team_name"] for team_data in game_dict().values()]
+print(team_names())
+
+
+#D5: player_numbers()
+def player_numbers(team_name):
+    for team_data in game_dict().values():
+        if team_data["team_name"] == team_name:
+            return [player_data["number"] for player_data in team_data["players"]]
+    return None
+print(player_numbers("Cleveland Cavaliers"))
+
+
+#D6: player_stats()
+def player_stats(player_name):
+    for team_data in game_dict().values():
+        for player_data in team_data["players"]:
+            if player_data["name"] == player_name:
+                return {
+                    "name:": player_data["name"],
+                    "number:": player_data["number"],
+                    "position:": player_data["position"],
+                    "points_per_game:": player_data["points_per_game"],
+                    "rebounds_per_game:": player_data["rebounds_per_game"],
+                    "assists_per_game:": player_data["assists_per_game"],
+                    "steals_per_game:": player_data["steals_per_game"],
+                    "blocks_per_game:": player_data["blocks_per_game"],
+                    "career_points:": player_data["career_points"],
+                    "age:": player_data["age"],
+                    "height_inches:": player_data["height_inches"],
+                    "shoe_brand:": player_data["shoe_brand"]
+                }
+    return None
+print(player_stats("Darius Garland"))
+
+#D7: average_rebounds_by_shoe_brand()
+def average_rebounds_by_shoe_brand():
+    rebounds_by_brand = {}
+    players_counts_by_brand = {}
+
+    for team_data in game_dict().values():
+        for player_data in team_data["players"]:
+            brand = player_data["shoe_brand"]
+            rebounds = player_data["rebounds_per_game"]
+
+            if brand not in rebounds_by_brand:
+                rebounds_by_brand[brand] = []
+                players_counts_by_brand[brand] = 0
+
+            rebounds_by_brand[brand].append(rebounds)
+            players_counts_by_brand[brand] += 1
+
+    for brand, rebounds_list in rebounds_by_brand.items():
+        average_rebounds = sum(rebounds_list) / players_counts_by_brand[brand]
+        print(f"{brand}: {average_rebounds: .2f}")
+average_rebounds_by_shoe_brand()
